@@ -34,7 +34,7 @@ _create_service() {
 
         [[ -e $file ]] && {
                 echo "Skip create service"
-                #return
+                return
         }
         echo "Create service: $file"
         cat >$file<<-EOF
