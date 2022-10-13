@@ -25,44 +25,44 @@ _download() {
                 return
         }
 
-        echo "download: $binArch $binArchAes"
+        echo "Download: $binArch $binArchAes"
         wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
 }
 
 _create_service() {
-	local file="/etc/systemd/system/udp2raw-server.service"
-	
+        local file="/etc/systemd/system/udp2raw-server.service"
+
         [[ -e $file ]] && {
                 echo "Skip create service"
                 return
         }
-	
-	cat >$file<<-EOF  
-	[Unit]
-	Description=upd2raw server daemon
-	After=syslog.target network.target auditd.service
-	Before=systemd-networkd.service
-	Wants=systemd-networkd.service
+        echo "Create service: $file"
+        cat >$file<<-EOF  
+        [Unit]
+        Description=upd2raw server daemon
+        After=syslog.target network.target auditd.service
+        Before=systemd-networkd.service
+        Wants=systemd-networkd.service
 
-	[Service]
-	Type=simple
-	EnvironmentFile=/etc/udp2raw/server
-	ExecStart=/usr/sbin/udp2raw_amd64_hw_aes -s \
-	  -l ${tcp_listen} \
-	  -r ${udp_listen} \
-	  --key ${key} \
-	  --raw-mode ${raw_mode} \
-	  --cipher-mode ${cipher_mode} \
-	  --auth-mode ${auth_mode} \
-	  --auto-rule
-	ExecReload=/bin/kill -HUP
-	ExecStop=/bin/kill -s QUIT PrivateTmp=true
-	Restart=on-failure
-	RestartSec=10s
+        [Service]
+        Type=simple
+        EnvironmentFile=/etc/udp2raw/server
+        ExecStart=/usr/sbin/udp2raw_amd64_hw_aes -s \\
+          -l \${tcp_listen} \\
+          -r \${udp_listen} \\
+          --key \${key} \\
+          --raw-mode \${raw_mode} \\
+          --cipher-mode \${cipher_mode} \\
+          --auth-mode \${auth_mode} \\
+          --auto-rule
+        ExecReload=/bin/kill -HUP
+        ExecStop=/bin/kill -s QUIT PrivateTmp=true
+        Restart=on-failure
+        RestartSec=10s
 
-	[Install]
-	WantedBy=multi-user.target
-	EOF
+        [Install]
+        WantedBy=multi-user.target
+        EOF
 }
 
 echo "Install..."
