@@ -66,6 +66,17 @@ WantedBy=multi-user.target
 EOF
 }
 
-echo "Install..."
+_install_wg() {
+    apt update
+    apt install wireguard
+}
+
+_create_wg_conf() {
+    apt update
+    apt install wireguard
+}
+
 _download
 _create_service
+_install_wg
+_create_wg_conf
