@@ -29,4 +29,5 @@ _download() {
 	wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
 }
 
+echo "install..."
 _download
