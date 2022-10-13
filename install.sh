@@ -47,13 +47,13 @@ _create_service() {
         [Service]
         Type=simple
         EnvironmentFile=/etc/udp2raw/server
-        ExecStart=/usr/sbin/udp2raw_amd64_hw_aes -s \\
-          -l \${tcp_listen} \\
-          -r \${udp_listen} \\
-          --key \${key} \\
-          --raw-mode \${raw_mode} \\
-          --cipher-mode \${cipher_mode} \\
-          --auth-mode \${auth_mode} \\
+        ExecStart=/usr/sbin/udp2raw_amd64_hw_aes -s \
+          -l ${tcp_listen} \
+          -r ${udp_listen} \
+          --key \${key} \
+          --raw-mode \${raw_mode} \
+          --cipher-mode \${cipher_mode} \
+          --auth-mode ${auth_mode} \
           --auto-rule
         ExecReload=/bin/kill -HUP
         ExecStop=/bin/kill -s QUIT PrivateTmp=true
