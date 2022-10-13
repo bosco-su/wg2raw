@@ -1,33 +1,43 @@
 #!/bin/bash
 
 _download() {
-	local arch=$(uname -m)
-	local file="/tmp/udp2raw.tar.gz"
-	local url="https://github.com/wangyu-/udp2raw/releases/download/20200818.0/udp2raw_binaries.tar.gz"
+        local arch=$(uname -m)
+        local file="/tmp/udp2raw.tar.gz"
+        local url="https://github.com/wangyu-/udp2raw/releases/download/20200818.0/udp2raw_binaries.tar.gz"
 
-	local binArch="undefine"
-	local binArchAes="undefine"
+        local binArch="undefine"
+        local binArchAes="undefine"
 
-	case $arch in
-	"x86_64")
-		binArch="udp2raw_amd64"
-		binArchAes="udp2raw_amd64_hw_aes"
-		;;
-	esac
+        case $arch in
+        "x86_64")
+                binArch="udp2raw_amd64"
+                binArchAes="udp2raw_amd64_hw_aes"
+                ;;
+        esac
 
-	[[ $binArch == "undefine" ]] && {
-		echo "Not currently supported $arch"
-		exit 1	
-	}
-	
-	[[ -e "/usr/sbin/$binArch" ]] && {
-		echo "Skip download"	
-		return
-	}
-	
-	echo "download: $binArch $binArchAes"
-	wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
+        [[ $binArch == "undefine" ]] && {
+                echo "Not currently supported $arch"
+                exit 1
+        }
+
+        [[ -e "/usr/sbin/$binArch" ]] && {
+                echo "Skip download"
+                return
+        }
+
+        echo "download: $binArch $binArchAes"
+        wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
 }
 
-echo "install..."
+_service() {
+        [[ -e "/etc/systemd/system/udp2raw-server.service" ]] && {
+                echo "Skip copy service"
+                return
+        }
+	
+	
+}
+
+echo "Install..."
 _download
+_service
