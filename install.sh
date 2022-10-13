@@ -15,19 +15,15 @@ _download() {
 		;;
 	esac
 
-	if [ $binArch == "undefine" ]; then
-		echo "binArch = undefine"
-		_log "binArch = undefine"
-		stop
-	fi
-
-	[ -e "/usr/sbin/$binArch" ] && return
-
-	_log "download" $binArch $binArchAes
-
+	[[ $binArch == "undefine" ]] && {
+		echo "Not currently supported $arch"
+		exit 1	
+	}
+	
+	[[ -e "/usr/sbin/$binArch" ]] && {
+		echo "Skip download"	
+		return
+	]
+	echo "download: $binArch $binArchAes"
 	wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
-
-	uci set "${NAME}.define.bin_arch=${binArch}"
-	uci set "${NAME}.define.bin_arch_aes=${binArchAes}"
-	uci commit $NAME
 }
