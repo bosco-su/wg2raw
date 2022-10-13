@@ -29,15 +29,19 @@ _download() {
         wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
 }
 
-_service() {
-        [[ -e "/etc/systemd/system/udp2raw-server.service" ]] && {
-                echo "Skip copy service"
+_create_service() {
+	local file="/etc/systemd/system/udp2raw-server.service"
+	
+        [[ -e $file ]] && {
+                echo "Skip create service"
                 return
         }
 	
-	
+	cat >$file<<-EOF  
+	Hello,world!  
+	EOF
 }
 
 echo "Install..."
 _download
-_service
+_create_service
