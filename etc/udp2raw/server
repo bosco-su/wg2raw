@@ -1,4 +1,4 @@
-rogram=udp2raw_amd64_hw_aes
+program=udp2raw_amd64_hw_aes
 tcp_listen=0.0.0.0:port
 udp_listen=127.0.0.1:port
 key=key
