@@ -23,7 +23,8 @@ _download() {
 	[[ -e "/usr/sbin/$binArch" ]] && {
 		echo "Skip download"	
 		return
-	]
+	}
+	
 	echo "download: $binArch $binArchAes"
 	wget -qO $file $url && tar -oxzf $file $binArch $binArchAes -C "/usr/sbin" && rm $file
 }
